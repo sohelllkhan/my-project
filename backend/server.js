@@ -1,12 +1,23 @@
 // backend/server.js
 
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const Donor = require('./models/Donor');
+//const express = require('express');
+//const mongoose = require('mongoose');
+//const cors = require('cors');
+//const dotenv = require('dotenv');
+//const Donor = require('./models/Donor');
+
+
+//dotenv.config();
+
+// server.js (ES module style)
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import dotenv from 'dotenv';
 
 dotenv.config();
+
+//const app = express();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
