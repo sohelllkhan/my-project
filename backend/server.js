@@ -14,7 +14,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import Donor from './model/Donor';
+import Donor from './models/Donor';
 
 dotenv.config();
 
