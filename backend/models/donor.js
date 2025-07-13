@@ -1,14 +1,27 @@
-// backend/models/donor.js
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const donorSchema = new mongoose.Schema({
   name: String,
   bloodGroup: String,
-  area: String,
   phone: String,
-  latitude: Number,
-  longitude: Number,
+  area: String,
+  location: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      required: true,
+      default: "Point"
+    },
+    coordinates: {
+      type: [Number], // [lng, lat]
+      required: true
+    }
+  }
 });
 
-const Donor = mongoose.model('Donor', donorSchema);
+// 🔥 Required for $geoNear
+donorSchema.index({ location: "2dsphere" });
+//donorSchema.index({ location: "2dsphere" });
+
+const Donor = mongoose.model("Donor", donorSchema);
 export default Donor;
