@@ -1,3 +1,4 @@
+// backend/models/donor.js
 import mongoose from 'mongoose';
 
 const donorSchema = new mongoose.Schema({
@@ -9,4 +10,5 @@ const donorSchema = new mongoose.Schema({
   longitude: Number,
 });
 
-module.exports = mongoose.model('Donor', donorSchema);
+const Donor = mongoose.model('Donor', donorSchema);
+export default Donor;
