@@ -11,7 +11,7 @@ function DonorPage() {
   const [loadingLocation, setLoadingLocation] = useState(true);
   const [donors, setDonors] = useState([]);
 
-  // Auto-location + reverse geocode
+  // Auto-detect location
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -46,12 +46,16 @@ function DonorPage() {
     }
   }, []);
 
-  // Load donors list from backend
+  // Fetch donors list
   useEffect(() => {
-    fetch("http://localhost:5000/api/donors")
+    // fetch("https://my-project-4bw6.onrender.com/api/donors")
+      fetch("http://localhost:5000/api/donors")
       .then((res) => res.json())
       .then(setDonors)
-      .catch((err) => console.error("Error loading donors:", err));
+      .catch((err) => {
+        console.error("Error loading donors:", err);
+        alert("❌ Failed to load donors. Check server or CORS.");
+      });
   }, []);
 
   const handleChange = (e) => {
@@ -61,7 +65,8 @@ function DonorPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:5000/api/donors", {
+       const res = await fetch("https://my-project-4bw6.onrender.com/api/donors", {
+      //  const res = await fetch("http://localhost:5000/api/donors", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -74,14 +79,14 @@ function DonorPage() {
       const result = await res.json();
       if (res.ok) {
         alert("✅ Donor added!");
-        setDonors((prev) => [...prev, result]);
+        setDonors((prev) => [...prev, { ...formData }]);
         setFormData({ name: "", bloodGroup: "", area: "", phone: "" });
       } else {
         alert("❌ Failed to add donor: " + result.error);
       }
     } catch (err) {
       console.error("Submit error:", err);
-      alert("❌ Network error");
+      alert("❌ Network error while submitting.");
     }
   };
 
@@ -144,7 +149,7 @@ function DonorPage() {
         <ul className="space-y-2">
           {donors.map((donor, idx) => (
             <li key={idx} className="border p-4 rounded bg-gray-50">
-              <strong>{donor.name}</strong> ({donor.bloodGroup}) - {donor.area}  
+              <strong>{donor.name}</strong> ({donor.bloodGroup}) - {donor.area}
               <div className="text-sm text-gray-500">📞 {donor.phone}</div>
             </li>
           ))}
